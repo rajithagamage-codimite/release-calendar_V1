@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Release Calendar 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "DM Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1e3a8a 0%,
+          #3b82f6 50%,
+          #06b6d4 100%
+        );
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      .header {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-family: "Syne", sans-serif;
+        font-size: 42px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+      }
+
+      .header p {
+        color: #6b7280;
+        font-size: 15px;
+      }
+
+      .view-controls {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .view-btn,
+      .sheet-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+        font-family: "DM Sans", sans-serif;
+        background: #f1f5f9;
+        color: #1e293b;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .view-btn:hover,
+      .sheet-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .view-btn.active {
+        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        color: white;
+      }
+
+      .sheet-btn {
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        color: white;
+        margin-left: auto;
+      }
+
+      .month-selector {
+        padding: 12px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        background: white;
+        color: #1f2937;
+        transition: all 0.3s;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .month-selector:hover {
+        border-color: #3b82f6;
+      }
+
+      .legend {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        padding: 8px 16px;
+        background: #f3f4f6;
+        border-radius: 20px;
+      }
+
+      .legend-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+      }
+
+      .critical {
+        background: #dc2626;
+      }
+      .normal {
+        background: #10b981;
+      }
+      .holiday {
+        background: #f59e0b;
+      }
+      .today {
+        background: #3b82f6;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: white;
+        font-size: 18px;
+      }
+
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error {
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        border: 2px solid #fecaca;
+      }
+
+      .info-banner {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        border: 2px solid #6ee7b7;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        color: #065f46;
+      }
+
+      .info-banner strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+
+      .info-banner a {
+        color: #059669;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+
+      .refresh-btn {
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 13px;
+        margin-top: 10px;
+        transition: all 0.3s;
+      }
+
+      .refresh-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+      }
+
+      /* Calendar Grid */
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .month-card {
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        overflow: hidden;
+      }
+
+      .month-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      }
+
+      .month-header {
+        font-family: "Syne", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1e3a8a;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 4px solid #3b82f6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .month-stats {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 400;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .days-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .day-name {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #6b7280;
+        padding: 8px 4px;
+        text-transform: uppercase;
+      }
+
+      .days-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        grid-auto-rows: auto;
+      }
+
+      .day-cell {
+        min-height: 90px;
+        height: auto;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        padding: 6px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+        overflow: hidden;
+      }
+
+      .day-cell:hover {
+        border-color: #3b82f6;
+        transform: scale(1.02);
+        z-index: 10;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        overflow: visible;
+      }
+
+      .day-cell.empty {
+        border: none;
+        cursor: default;
+        background: transparent;
+      }
+
+      .day-cell.empty:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .day-number {
+        font-weight: 700;
+        color: #1f2937;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .day-cell.today-mark {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-color: #3b82f6;
+        border-width: 3px;
+      }
+
+      .day-cell.today-mark .day-number {
+        color: #1e3a8a;
+      }
+
+      .day-cell.has-holiday {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-color: #f59e0b;
+      }
+
+      .day-cell.has-release {
+        background: #f0fdf4;
+        border-width: 3px;
+      }
+
+      .release-indicators {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        flex: 1;
+      }
+
+      .release-tag {
+        font-size: 10px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+        color: white;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+      }
+
+      .release-tag.critical {
+        background: #dc2626;
+      }
+
+      .release-tag.normal {
+        background: #16a34a;
+      }
+
+      .holiday-tag {
+        font-size: 10px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+        background: #f59e0b;
+        color: white;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .count-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: #64748b;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 10px;
+      }
+
+      .tooltip {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: #1f2937;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 13px;
+        z-index: 1000;
+        min-width: 200px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+        white-space: normal;
+        opacity: 0;
+        transition: opacity 0.3s;
+        max-width: 300px;
+      }
+
+      .day-cell:hover .tooltip {
+        display: block;
+        opacity: 1;
+      }
+
+      .tooltip::after {
+        /* content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #1e293b; */
+        display: none;
+      }
+
+      .tooltip-section {
+        margin-bottom: 8px;
+      }
+
+      .tooltip-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .tooltip-title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #fbbf24;
+      }
+
+      .tooltip-item {
+        padding: 6px 8px;
+        margin-bottom: 6px;
+        border-radius: 6px;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .tooltip-item.critical {
+        background: #dc2626;
+      }
+
+      .tooltip-item.normal {
+        background: #16a34a;
+      }
+
+      .tooltip-item.holiday {
+        background: #f59e0b;
+      }
+
+      .tooltip-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .tooltip-item:last-child {
+        border-bottom: none;
+      }
+
+      .view-container {
+        display: none;
+      }
+
+      .view-container.active {
+        display: block;
+      }
+
+      /* Month View */
+      .single-month-view {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+
+      .single-month-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .month-title {
+        font-family: "Syne", sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .month-nav {
+        display: flex;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+        background: #f1f5f9;
+        color: #1e293b;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .nav-btn:hover {
+        background: #e2e8f0;
+        transform: translateY(-2px);
+      }
+
+      .large-calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+      }
+
+      .large-day-name {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #64748b;
+        padding: 12px;
+        text-transform: uppercase;
+      }
+
+      .large-day-cell {
+        min-height: 120px;
+        height: auto;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        position: relative;
+        background: white;
+        transition: all 0.2s;
+      }
+
+      .large-day-cell:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .large-day-cell.empty {
+        border: none;
+        background: transparent;
+      }
+
+      .large-day-number {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+      }
+
+      .large-day-cell.today-mark {
+        border-color: #3b82f6;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      }
+
+      .large-day-cell.today-mark .large-day-number {
+        color: #3b82f6;
+      }
+
+      .large-day-cell.has-holiday {
+        background: #fffbeb;
+      }
+
+      .large-release-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .large-release-tag {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+
+      .large-release-tag.critical {
+        background: #dc2626;
+        color: white;
+      }
+
+      .large-release-tag.normal {
+        background: #16a34a;
+        color: white;
+      }
+
+      .large-holiday-tag {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        background: #f59e0b;
+        color: white;
+      }
+
+      /* List View */
+      .list-view {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+
+      .list-view h2 {
+        font-family: "Syne", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 30px;
+      }
+
+      .release-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .release-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 16px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s;
+      }
+
+      .release-item:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transform: translateX(4px);
+      }
+
+      .release-badge {
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-right: 20px;
+      }
+
+      .release-badge.critical {
+        background: #dc2626;
+        color: white;
+      }
+
+      .release-badge.normal {
+        background: #16a34a;
+        color: white;
+      }
+
+      .release-info {
+        flex: 1;
+      }
+
+      .release-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+
+      .release-date {
+        font-size: 14px;
+        color: #6b7280;
+      }
+
+      .release-description {
+        font-size: 13px;
+        color: #1247db;
+        margin-top: 4px;
+        font-style: italic;
+        font-weight: bold;
+      }
+
+      .days-until {
+        font-size: 16px;
+        font-weight: 700;
+        color: #3b82f6;
+        padding: 8px 16px;
+        background: #eff6ff;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 28px;
+        }
+
+        .month-title {
+          font-size: 24px;
+        }
+
+        .month-nav {
+          flex-direction: column;
+        }
+
+        .release-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .release-badge {
+          margin-bottom: 12px;
+        }
+
+        .days-until {
+          margin-top: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🗓️ Project Release Calendar 2026</h1>
+        <p>
+          Track project releases and public holidays - synced with Google Sheets
+        </p>
+
+        <div class="view-controls">
+          <button class="view-btn active" onclick="switchView('year')">
+            📅 Year View
+          </button>
+          <button class="view-btn" onclick="switchView('month')">
+            📆 Month View
+          </button>
+          <button class="view-btn" onclick="switchView('list')">
+            📋 List View
+          </button>
+
+          <select
+            class="month-selector"
+            id="monthSelector"
+            onchange="changeMonth()"
+            style="display: none"
+          >
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+          </select>
+
+          <a
+            id="sheetLink"
+            href="#"
+            target="_blank"
+            class="sheet-btn"
+            style="display: none"
+          >
+            📊 Edit Google Sheet
+          </a>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color critical"></div>
+            <span><strong>Critical Release</strong></span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color normal"></div>
+            <span><strong>Normal Release</strong></span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color holiday"></div>
+            <span><strong>Public Holiday</strong></span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color today"></div>
+            <span><strong>Today</strong></span>
+          </div>
+        </div>
+
+        <div class="info-banner">
+          <!-- <strong>✨ Update Instructions:</strong>
+          1. Click "📊 Edit Google Sheet" button above<br />
+          2. Make your changes in the sheet<br />
+          3. Click "🔄 Refresh Calendar" below to see updates
+          <br /><br /> -->
+          <button class="refresh-btn" onclick="loadData()">
+            🔄 Refresh Calendar
+          </button>
+        </div>
+      </div>
+
+      <div id="loadingMessage" class="loading">
+        <div class="spinner"></div>
+        Loading calendar from Google Sheets...
+      </div>
+
+      <!-- Year View -->
+      <div id="yearView" class="view-container">
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <!-- Month View -->
+      <div id="monthView" class="view-container">
+        <div class="single-month-view active" id="singleMonthView">
+          <div class="single-month-header">
+            <div class="month-title" id="currentMonthTitle"></div>
+            <div class="month-nav">
+              <button class="nav-btn" onclick="previousMonth()">
+                ← Previous
+              </button>
+              <button class="nav-btn" onclick="nextMonth()">Next →</button>
+            </div>
+          </div>
+          <div class="large-calendar" id="largeCalendar"></div>
+        </div>
+      </div>
+
+      <!-- List View -->
+      <div id="listView" class="view-container">
+        <div class="list-view active">
+          <h2>📅 Upcoming Releases (Next 60 Days)</h2>
+          <div class="release-list" id="releaseList"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ========================================
+      // CONFIGURATION - REPLACE WITH YOUR GOOGLE SHEET ID
+      // ========================================
+      const SHEET_ID = "1yIosksn3H782KFzzW4kXxANNckGq9mYVIvLd4pA2DFw";
+      // Example: '1yIosksn3H782KFzzDFw'
+
+      // Sheet names (don't change unless you rename the sheets)
+      const RELEASES_SHEET = "Releases";
+      const HOLIDAYS_SHEET = "Holidays";
+
+      // ========================================
+
+      let projects = [];
+      let holidays = [];
+
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const today = new Date();
+      let currentMonthIndex = today.getMonth();
+
+      // Set the Google Sheet link
+      if (SHEET_ID !== "YOUR_GOOGLE_SHEET_ID_HERE") {
+        const sheetLink = document.getElementById("sheetLink");
+        sheetLink.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+        sheetLink.style.display = "inline-flex";
+      }
+
+      // Load data from Google Sheets
+      async function loadData() {
+        try {
+          // Show loading message
+          document.getElementById("loadingMessage").style.display = "block";
+          document.getElementById("yearView").classList.remove("active");
+
+          // Fetch releases
+          const releasesUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${RELEASES_SHEET}`;
+          const releasesResponse = await fetch(releasesUrl);
+          const releasesText = await releasesResponse.text();
+          const releasesJson = JSON.parse(
+            releasesText.substring(47).slice(0, -2),
+          );
+
+          // Fetch holidays
+          const holidaysUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${HOLIDAYS_SHEET}`;
+          const holidaysResponse = await fetch(holidaysUrl);
+          const holidaysText = await holidaysResponse.text();
+          const holidaysJson = JSON.parse(
+            holidaysText.substring(47).slice(0, -2),
+          );
+
+          // Parse releases (skip header row)
+          // projects = releasesJson.table.rows
+          //   .slice(1)
+          //   .map((row) => {
+          //     const name = row.c[0]?.v || "";
+          //     const dateStr = row.c[1]?.v || "";
+          //     const critical =
+          //       row.c[2]?.v?.toLowerCase() === "yes" ||
+          //       row.c[2]?.v?.toLowerCase() === "true";
+          //     const version = row.c[3]?.v || "";
+
+              projects = releasesJson.table.rows
+              .slice(1)
+              .map((row) => {
+                const name = row.c[0]?.v || "";
+                const dateStr = row.c[1]?.v || "";
+                const critical =
+                  row.c[2]?.v?.toLowerCase() === "yes" ||
+                  row.c[2]?.v?.toLowerCase() === "true";
+                const version = row.c[3]?.v || "";
+                const description = row.c[4]?.v || "";
+
+              // Parse date (Google Sheets date format)
+              let date = "";
+              if (dateStr) {
+                if (typeof dateStr === "string" && dateStr.includes("-")) {
+                  date = dateStr;
+                } else if (
+                  typeof dateStr === "string" &&
+                  dateStr.match(/Date\((\d+),(\d+),(\d+)\)/)
+                ) {
+                  const match = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+                  const year = parseInt(match[1]);
+                  const month = String(parseInt(match[2]) + 1).padStart(2, "0");
+                  const day = String(parseInt(match[3])).padStart(2, "0");
+                  date = `${year}-${month}-${day}`;
+                } else {
+                  // Try to parse as a regular date
+                  const d = new Date(dateStr);
+                  if (!isNaN(d.getTime())) {
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, "0");
+                    const day = String(d.getDate()).padStart(2, "0");
+                    date = `${year}-${month}-${day}`;
+                  }
+                }
+              }
+
+              return { name, date, critical, version, description  };
+            })
+            .filter((p) => p.name && p.date);
+
+          // Parse holidays (skip header row)
+          holidays = holidaysJson.table.rows
+            .slice(1)
+            .map((row) => {
+              const name = row.c[0]?.v || "";
+              const dateStr = row.c[1]?.v || "";
+
+              // Parse date
+              let date = "";
+              if (dateStr) {
+                if (typeof dateStr === "string" && dateStr.includes("-")) {
+                  date = dateStr;
+                } else if (
+                  typeof dateStr === "string" &&
+                  dateStr.match(/Date\((\d+),(\d+),(\d+)\)/)
+                ) {
+                  const match = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+                  const year = parseInt(match[1]);
+                  const month = String(parseInt(match[2]) + 1).padStart(2, "0");
+                  const day = String(parseInt(match[3])).padStart(2, "0");
+                  date = `${year}-${month}-${day}`;
+                } else {
+                  const d = new Date(dateStr);
+                  if (!isNaN(d.getTime())) {
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, "0");
+                    const day = String(d.getDate()).padStart(2, "0");
+                    date = `${year}-${month}-${day}`;
+                  }
+                }
+              }
+
+              return { name, date };
+            })
+            .filter((h) => h.name && h.date);
+
+          // Hide loading message
+          document.getElementById("loadingMessage").style.display = "none";
+
+          // Show year view
+          document.getElementById("yearView").classList.add("active");
+
+          // Render calendar
+          renderYearView();
+          renderUpcomingReleases();
+          renderSingleMonth(currentMonthIndex);
+          document.getElementById("monthSelector").value = currentMonthIndex;
+        } catch (error) {
+          console.error("Error loading data:", error);
+          document.getElementById("loadingMessage").innerHTML = `
+                    <div class="error">
+                        <strong>⚠️ Error Loading Data from Google Sheets</strong><br><br>
+                        <strong>Possible issues:</strong><br>
+                        1. Sheet ID not configured (check the SHEET_ID in the code)<br>
+                        2. Google Sheet not shared publicly (must be "Anyone with the link can view")<br>
+                        3. Sheet names don't match (must be "Releases" and "Holidays")<br>
+                        4. Internet connection issue<br><br>
+                        <strong>Error details:</strong> ${error.message}
+                    </div>
+                `;
+        }
+      }
+
+      // Calendar Functions
+      function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+      }
+
+      function getFirstDayOfMonth(year, month) {
+        return new Date(year, month, 1).getDay();
+      }
+
+      function getProjectsForDate(dateStr) {
+        return projects.filter((p) => p.date === dateStr);
+      }
+
+      function getHolidaysForDate(dateStr) {
+        return holidays.filter((h) => h.date === dateStr);
+      }
+
+      function switchView(view) {
+        document
+          .querySelectorAll(".view-container")
+          .forEach((v) => v.classList.remove("active"));
+        document
+          .querySelectorAll(".view-btn")
+          .forEach((b) => b.classList.remove("active"));
+
+        if (view === "year") {
+          document.getElementById("yearView").classList.add("active");
+          document.querySelectorAll(".view-btn")[0].classList.add("active");
+          document.getElementById("monthSelector").style.display = "none";
+        } else if (view === "month") {
+          document.getElementById("monthView").classList.add("active");
+          document.querySelectorAll(".view-btn")[1].classList.add("active");
+          document.getElementById("monthSelector").style.display = "block";
+        } else if (view === "list") {
+          document.getElementById("listView").classList.add("active");
+          document.querySelectorAll(".view-btn")[2].classList.add("active");
+          document.getElementById("monthSelector").style.display = "none";
+        }
+      }
+
+      function changeMonth() {
+        const select = document.getElementById("monthSelector");
+        currentMonthIndex = parseInt(select.value);
+        renderSingleMonth(currentMonthIndex);
+      }
+
+      function previousMonth() {
+        currentMonthIndex = (currentMonthIndex - 1 + 12) % 12;
+        document.getElementById("monthSelector").value = currentMonthIndex;
+        renderSingleMonth(currentMonthIndex);
+      }
+
+      function nextMonth() {
+        currentMonthIndex = (currentMonthIndex + 1) % 12;
+        document.getElementById("monthSelector").value = currentMonthIndex;
+        renderSingleMonth(currentMonthIndex);
+      }
+
+      function renderSingleMonth(monthIdx) {
+        const year = 2026;
+        const largeCalendar = document.getElementById("largeCalendar");
+        const monthTitle = document.getElementById("currentMonthTitle");
+
+        monthTitle.textContent = `${months[monthIdx]} 2026`;
+        largeCalendar.innerHTML = "";
+
+        dayNames.forEach((day) => {
+          const dayName = document.createElement("div");
+          dayName.className = "large-day-name";
+          dayName.textContent = day;
+          largeCalendar.appendChild(dayName);
+        });
+
+        const daysInMonth = getDaysInMonth(year, monthIdx);
+        const firstDay = getFirstDayOfMonth(year, monthIdx);
+
+        for (let i = 0; i < firstDay; i++) {
+          const emptyCell = document.createElement("div");
+          emptyCell.className = "large-day-cell empty";
+          largeCalendar.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateStr = `2026-${String(monthIdx + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const dayProjects = getProjectsForDate(dateStr);
+          const dayHolidays = getHolidaysForDate(dateStr);
+
+          const dayCell = document.createElement("div");
+          dayCell.className = "large-day-cell";
+
+          const cellDate = new Date(2026, monthIdx, day);
+          if (cellDate.toDateString() === today.toDateString()) {
+            dayCell.classList.add("today-mark");
+          }
+
+          if (dayHolidays.length > 0) {
+            dayCell.classList.add("has-holiday");
+          }
+
+          const dayNumber = document.createElement("div");
+          dayNumber.className = "large-day-number";
+          dayNumber.textContent = day;
+          dayCell.appendChild(dayNumber);
+
+          if (dayProjects.length > 0 || dayHolidays.length > 0) {
+            const releaseList = document.createElement("div");
+            releaseList.className = "large-release-list";
+
+            dayProjects.forEach((project) => {
+              const tag = document.createElement("div");
+              tag.className = `large-release-tag ${project.critical ? "critical" : "normal"}`;
+              tag.textContent = `${project.name} ${project.version}`;
+              releaseList.appendChild(tag);
+            });
+
+            dayHolidays.forEach((holiday) => {
+              const tag = document.createElement("div");
+              tag.className = "large-holiday-tag";
+              tag.textContent = holiday.name;
+              releaseList.appendChild(tag);
+            });
+
+            dayCell.appendChild(releaseList);
+          }
+
+          largeCalendar.appendChild(dayCell);
+        }
+      }
+
+      function renderYearView() {
+        const calendarGrid = document.getElementById("calendarGrid");
+        calendarGrid.innerHTML = "";
+
+        months.forEach((monthName, monthIdx) => {
+          const year = 2026;
+          const daysInMonth = getDaysInMonth(year, monthIdx);
+          const firstDay = getFirstDayOfMonth(year, monthIdx);
+
+          const monthReleases = projects.filter((p) => {
+            const d = new Date(p.date);
+            return d.getFullYear() === year && d.getMonth() === monthIdx;
+          });
+
+          const monthCard = document.createElement("div");
+          monthCard.className = "month-card";
+
+          const monthHeader = document.createElement("div");
+          monthHeader.className = "month-header";
+
+          const monthTitle = document.createElement("span");
+          monthTitle.textContent = monthName;
+          monthHeader.appendChild(monthTitle);
+
+          if (monthReleases.length > 0) {
+            const monthStats = document.createElement("span");
+            monthStats.className = "month-stats";
+            monthStats.textContent = `${monthReleases.length} release${monthReleases.length > 1 ? "s" : ""}`;
+            monthHeader.appendChild(monthStats);
+          }
+
+          monthCard.appendChild(monthHeader);
+
+          const daysHeader = document.createElement("div");
+          daysHeader.className = "days-header";
+          dayNames.forEach((day) => {
+            const dayName = document.createElement("div");
+            dayName.className = "day-name";
+            dayName.textContent = day;
+            daysHeader.appendChild(dayName);
+          });
+          monthCard.appendChild(daysHeader);
+
+          const daysGrid = document.createElement("div");
+          daysGrid.className = "days-grid";
+
+          for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement("div");
+            emptyCell.className = "day-cell empty";
+            daysGrid.appendChild(emptyCell);
+          }
+
+          for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `2026-${String(monthIdx + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            const dayProjects = getProjectsForDate(dateStr);
+            const dayHolidays = getHolidaysForDate(dateStr);
+
+            const dayCell = document.createElement("div");
+            dayCell.className = "day-cell";
+
+            const cellDate = new Date(2026, monthIdx, day);
+            if (cellDate.toDateString() === today.toDateString()) {
+              dayCell.classList.add("today-mark");
+            }
+
+            if (dayHolidays.length > 0) {
+              dayCell.classList.add("has-holiday");
+            }
+
+            if (dayProjects.length > 0) {
+              dayCell.classList.add("has-release");
+            }
+
+            const dayNumber = document.createElement("div");
+            dayNumber.className = "day-number";
+            dayNumber.textContent = day;
+            dayCell.appendChild(dayNumber);
+
+            if (dayProjects.length > 0 || dayHolidays.length > 0) {
+              const indicators = document.createElement("div");
+              indicators.className = "release-indicators";
+
+              // Show ALL projects, not limited to 3
+              dayProjects.forEach((project) => {
+                const tag = document.createElement("div");
+                tag.className = `release-tag ${project.critical ? "critical" : "normal"}`;
+                tag.textContent = project.name;
+                tag.title = `${project.name} ${project.version}`;
+                indicators.appendChild(tag);
+              });
+
+              if (dayHolidays.length > 0) {
+                dayHolidays.forEach((holiday) => {
+                  const holidayTag = document.createElement("div");
+                  holidayTag.className = "holiday-tag";
+                  holidayTag.textContent = holiday.name;
+                  indicators.appendChild(holidayTag);
+                });
+              }
+
+              dayCell.appendChild(indicators);
+
+              const tooltip = document.createElement("div");
+              tooltip.className = "tooltip";
+
+              if (dayProjects.length > 0) {
+                const releaseSection = document.createElement("div");
+                releaseSection.className = "tooltip-section";
+
+                const releaseTitle = document.createElement("div");
+                releaseTitle.className = "tooltip-title";
+                releaseTitle.textContent = `📦 Releases (${dayProjects.length}):`;
+                releaseSection.appendChild(releaseTitle);
+
+                dayProjects.forEach((project) => {
+                  const item = document.createElement("div");
+                  item.className = `tooltip-item ${project.critical ? "critical" : "normal"}`;
+                  item.textContent = `${project.name} ${project.version} ${project.critical ? "⚠️" : ""}`;
+                  releaseSection.appendChild(item);
+                });
+
+                tooltip.appendChild(releaseSection);
+              }
+
+              if (dayHolidays.length > 0) {
+                const holidaySection = document.createElement("div");
+                holidaySection.className = "tooltip-section";
+
+                const holidayTitle = document.createElement("div");
+                holidayTitle.className = "tooltip-title";
+                holidayTitle.textContent = "🎉 Holidays:";
+                holidaySection.appendChild(holidayTitle);
+
+                dayHolidays.forEach((holiday) => {
+                  const item = document.createElement("div");
+                  item.className = "tooltip-item holiday";
+                  item.textContent = holiday.name;
+                  holidaySection.appendChild(item);
+                });
+
+                tooltip.appendChild(holidaySection);
+              }
+
+              dayCell.appendChild(tooltip);
+            }
+
+            daysGrid.appendChild(dayCell);
+          }
+
+          monthCard.appendChild(daysGrid);
+          calendarGrid.appendChild(monthCard);
+        });
+      }
+
+      function renderUpcomingReleases() {
+        const releaseList = document.getElementById("releaseList");
+        const sixtyDaysFromNow = new Date();
+        sixtyDaysFromNow.setDate(sixtyDaysFromNow.getDate() + 60);
+
+        const upcoming = projects
+          .map((p) => ({
+            ...p,
+            dateObj: new Date(p.date),
+            daysUntil: Math.ceil(
+              (new Date(p.date) - today) / (1000 * 60 * 60 * 24),
+            ),
+          }))
+          .filter((p) => p.dateObj >= today && p.dateObj <= sixtyDaysFromNow)
+          .sort((a, b) => a.dateObj - b.dateObj);
+
+        if (upcoming.length === 0) {
+          releaseList.innerHTML =
+            '<p style="color: #64748b; text-align: center; padding: 20px;">No releases in the next 60 days</p>';
+          return;
+        }
+
+        releaseList.innerHTML = "";
+        upcoming.forEach((release) => {
+          const item = document.createElement("div");
+          item.className = `release-item ${release.critical ? "critical" : "normal"}`;
+
+          const badge = document.createElement("div");
+          badge.className = `release-badge ${release.critical ? "critical" : "normal"}`;
+          badge.textContent = release.critical ? "🔴 Critical" : "🟢 Normal";
+          item.appendChild(badge);
+
+          const info = document.createElement("div");
+          info.className = "release-info";
+
+          // const name = document.createElement("div");
+          // name.className = "release-name";
+          // name.textContent = `${release.name} ${release.version}`;
+          // info.appendChild(name);
+
+          // const date = document.createElement("div");
+          // date.className = "release-date";
+
+          const name = document.createElement("div");
+          name.className = "release-name";
+          name.textContent = `${release.name} ${release.version}`;
+          info.appendChild(name);
+          
+          if (release.description) {
+            const desc = document.createElement("div");
+            desc.className = "release-description";
+            desc.textContent = release.description;
+            info.appendChild(desc);
+          }
+          
+          const date = document.createElement("div");
+          date.className = "release-date";
+          date.textContent = new Date(release.date).toLocaleDateString(
+            "en-US",
+            {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            },
+          );
+          info.appendChild(date);
+
+          item.appendChild(info);
+
+          const daysUntil = document.createElement("div");
+          daysUntil.className = "days-until";
+          daysUntil.textContent =
+            release.daysUntil === 0
+              ? "🎯 Today!"
+              : release.daysUntil === 1
+                ? "⏰ Tomorrow"
+                : release.daysUntil < 0
+                  ? "✅ Released"
+                  : `${release.daysUntil} days`;
+          item.appendChild(daysUntil);
+
+          releaseList.appendChild(item);
+        });
+      }
+
+      // Initialize - Load data on page load
+      loadData();
+    </script>
+  </body>
+</html>
