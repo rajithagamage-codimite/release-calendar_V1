@@ -1154,6 +1154,13 @@
             dayCell.classList.add("has-holiday");
           }
 
+          if (dayProjects.length > 0) {
+            dayCell.classList.add("has-release");
+          if (dayProjects.some(p => p.critical)) {
+            dayCell.classList.add("has-critical");
+            }
+          }
+
           const dayNumber = document.createElement("div");
           dayNumber.className = "large-day-number";
           dayNumber.textContent = day;
@@ -1300,6 +1307,7 @@
               if (dayProjects.length > 0) {
                 const releaseSection = document.createElement("div");
                 releaseSection.className = "tooltip-section";
+                
 
                 const releaseTitle = document.createElement("div");
                 releaseTitle.className = "tooltip-title";
