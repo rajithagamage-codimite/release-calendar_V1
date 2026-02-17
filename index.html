@@ -358,6 +358,12 @@
       .day-cell.has-release {
         background: #f0fdf4;
         border-width: 3px;
+      }
+
+      /* for adding border for critical releases */
+      .day-cell.has-critical {
+        background: #fff0f0;
+        border-width: 3px;
         border-color: #dc2626;
       }
 
@@ -1247,8 +1253,16 @@
               dayCell.classList.add("has-holiday");
             }
 
+           /* if (dayProjects.length > 0) {
+              dayCell.classList.add("has-release");
+            } */
+
+            /* adding border for critical releases */
             if (dayProjects.length > 0) {
               dayCell.classList.add("has-release");
+            if (dayProjects.some(p => p.critical)) {
+              dayCell.classList.add("has-critical");
+              }
             }
 
             const dayNumber = document.createElement("div");
